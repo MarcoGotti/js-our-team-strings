@@ -1,0 +1,12 @@
+.opacity{
+    filter: opacity(0.9);
+}
+.cardEl:hover {
+    transform: scale(1.07);
+    cursor: pointer;
+    filter: opacity(1)
+}
+
+.toggle_click{
+    background-color: blueviolet;
+}
