@@ -15,11 +15,12 @@ for (let i = 0; i < team.length; i++) {
  * Generate card element and associated offcanvas element
  * Generate 7 DOM elements and return them as cardEl
  * @param {string} name Insert a name into the card
+ * @param {string} aboutYou 
  * @returns object
  */
-function generateCardEl(name) {
+function generateCardEl(name, aboutYou) {
     //generate card element
-    const offCanvasName = name[0] + name[1] + name[2];
+    const offCanvasName = (name[0] + name[1] + name[2]).trim();//md-5, tecniche di hash
     const cardEl = document.createElement('a');
     cardEl.classList.add('card', 'col-2', 'text-center', 'fw-bold', 'opacity', 'text-decoration-none');
     cardEl.innerText = name;
@@ -27,9 +28,11 @@ function generateCardEl(name) {
     cardEl.setAttribute('href', '#offcanvasMember' + offCanvasName);// non sono sicuro che sia semanticamente bello
 
     //generate offcanvas element in the same function
+    //no template literam
     const offcanvasEl = document.createElement('div');
     offcanvasEl.classList.add('offcanvas', 'offcanvas-start');
     offcanvasEl.setAttribute('id', 'offcanvasMember' + offCanvasName);// non sono sicuro che sia semanticamente bello
+    offcanvasEl.setAttribute('data-bs-backdrop', 'static');
     containerEl.appendChild(offcanvasEl);
 
     const offcanvasHeaderEl = document.createElement('div');
@@ -51,20 +54,21 @@ function generateCardEl(name) {
     offcanvasBodyEl.classList.add('offcanvas-body', 'toggle_click');
     offcanvasEl.appendChild(offcanvasBodyEl);
 
-    // this element I can't change it with addEventListener because the const is local
+    // define aboutYou parameter for form > textarea.value
     const offcanvasAboutYouEl = document.createElement('div');
-    offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
+    
+    if (!aboutYou) {
+        offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
+    
+    } else {
+        offcanvasAboutYouEl.innerText = aboutYou;
+        console.log(offcanvasAboutYouEl.innerText);
+    }
+    
     offcanvasBodyEl.appendChild(offcanvasAboutYouEl);
 
     //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
 
-    /* //questa formula è farina del mio sacco: lightMember() not defined
-    cardEl.setAttribute('onclick', 'lightMember()');  
-    function lightMember() {
-        cardEl.classList.toggle('toggle_click');  
-    } */
-
-    //questa formula è un copy-paste della correzione di Fabio
     cardEl.addEventListener('click', function(e){  
         this.classList.toggle('toggle_click');
     })
@@ -86,14 +90,14 @@ document.getElementById('addMember').addEventListener('submit', function(e){
     const newMemberName = document.getElementById('newMemberName').value;
     const newMemberLastName = document.getElementById('newMemberLastName').value;
     const aboutMember = document.getElementById('aboutMember').value;
-   
+    console.log(aboutMember);
    
     if (newMemberName == '' || aboutMember == '') {
         alert('🛑" *Name " and " *About you " are mandatory 🛑');
     } else {
         const newMember = (`${newMemberName} ${newMemberLastName}`);
         console.log(newMember);
-        const cardEl = generateCardEl(newMember);
+        const cardEl = generateCardEl(newMember, aboutMember);
         containerEl.appendChild(cardEl);
     }
 
