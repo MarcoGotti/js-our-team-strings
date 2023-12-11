@@ -41,7 +41,6 @@ function generateCardEl(name) {
 
     const offcanvasTitleEl = document.createElement('h5');
     offcanvasTitleEl.classList.add('offcanvas-title');
-    offcanvasTitleEl.setAttribute('id', 'offcanvasName');
     offcanvasTitleEl.innerHTML = name;
     offcanvasHeaderEl.appendChild(offcanvasTitleEl);
 
@@ -78,6 +77,7 @@ function generateCardEl(name) {
     })
     return cardEl //
 }
+
 
 
 
