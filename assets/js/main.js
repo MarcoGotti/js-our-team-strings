@@ -6,6 +6,7 @@ const team =['Jimmy Page', 'Jonah Lomu', 'Marilyn Monroe', 'Merlin', 'Donald Duc
 const containerEl = document.querySelector('.container');
 
 for (let i = 0; i < team.length; i++) {
+
     const cardEl = generateCardEl(team[i]);
     containerEl.appendChild(cardEl);
     const offcanvasEl = generateOffCanvasEl(team[i]);
@@ -20,11 +21,12 @@ for (let i = 0; i < team.length; i++) {
  * @returns object
  */
 function generateCardEl(name) {
+    const offCanvasName = name[0] + name[1] + name[2];
     const cardEl = document.createElement('a');
     cardEl.classList.add('card', 'col-2', 'text-center', 'fw-bold', 'opacity', 'text-decoration-none');
     cardEl.innerText = name;
     cardEl.setAttribute('data-bs-toggle', 'offcanvas');
-    cardEl.setAttribute('href', '#offcanvasMember');
+    cardEl.setAttribute('href', '#offcanvasMember' + offCanvasName);//
 
     //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
 
@@ -37,15 +39,21 @@ function generateCardEl(name) {
     //questa formula è un copy-paste della correzione di Fabio
     cardEl.addEventListener('click', function(e){  
         this.classList.toggle('toggle_click');
+    
     })
     return cardEl
 }
 
+/**
+ * Generate offcanvas element and child elements
+ * @param {string} name Insert same name as in cardEl
+ * @returns object
+ */
 function generateOffCanvasEl(name) {
-    // create offcanvas
+    const offCanvasName = name[0] + name[1] + name[2];
     const offcanvasEl = document.createElement('div');
     offcanvasEl.classList.add('offcanvas', 'offcanvas-start');
-    offcanvasEl.setAttribute('id', 'offcanvasMember');
+    offcanvasEl.setAttribute('id', 'offcanvasMember' + offCanvasName);//
 
     const offcanvasHeaderEl = document.createElement('div');
     offcanvasHeaderEl.classList.add('offcanvas-header', 'toggle_click');
@@ -70,6 +78,11 @@ function generateOffCanvasEl(name) {
     const offcanvasAboutYouEl = document.createElement('div');
     offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
     offcanvasBodyEl.appendChild(offcanvasAboutYouEl);
+
+    // back to standard as one closes the offcanvas. cardEl is undefined
+    offcanvasButtonEl.addEventListener('click', function(){
+        cardEl.classList.remove('toggle_click'); 
+    })
     /* 
     <div class="offcanvas-header toggle_click">
               <h5 class="offcanvas-title" id="offcanvasName">Bubu</h5>
@@ -111,15 +124,4 @@ document.getElementById('addMember').addEventListener('submit', function(e){
     document.getElementById('aboutMember').value = '';
 })
 
-
-let cardEl = generateCardEl();
-
-/* const cardEl = generateCardEl(member) //not defined
-console.log(cardEl); //not defined */
-
-
-
-/* function click_cardEl() {
-    document.querySelector('.cardEl').classList.add('text-bg-info'); 
-} */
 
