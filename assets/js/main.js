@@ -8,11 +8,8 @@ const containerEl = document.querySelector('.container');
 for (let i = 0; i < team.length; i++) {
 
     const cardEl = generateCardEl(team[i]);
-    containerEl.appendChild(cardEl);
-    //const offcanvasEl = generateOffCanvasEl(team[i]);
-    //containerEl.appendChild(offcanvasEl);    
+    containerEl.appendChild(cardEl);  
 }
-
 
 /**
  * Generate card element and associated offcanvas element
@@ -27,12 +24,12 @@ function generateCardEl(name) {
     cardEl.classList.add('card', 'col-2', 'text-center', 'fw-bold', 'opacity', 'text-decoration-none');
     cardEl.innerText = name;
     cardEl.setAttribute('data-bs-toggle', 'offcanvas');
-    cardEl.setAttribute('href', '#offcanvasMember' + offCanvasName);//
+    cardEl.setAttribute('href', '#offcanvasMember' + offCanvasName);// non sono sicuro che sia semanticamente bello
 
-    //generate offcanvas element
+    //generate offcanvas element in the same function
     const offcanvasEl = document.createElement('div');
     offcanvasEl.classList.add('offcanvas', 'offcanvas-start');
-    offcanvasEl.setAttribute('id', 'offcanvasMember' + offCanvasName);//
+    offcanvasEl.setAttribute('id', 'offcanvasMember' + offCanvasName);// non sono sicuro che sia semanticamente bello
     containerEl.appendChild(offcanvasEl);
 
     const offcanvasHeaderEl = document.createElement('div');
@@ -54,10 +51,10 @@ function generateCardEl(name) {
     offcanvasBodyEl.classList.add('offcanvas-body', 'toggle_click');
     offcanvasEl.appendChild(offcanvasBodyEl);
 
+    // this element I can't change it with addEventListener because the const is local
     const offcanvasAboutYouEl = document.createElement('div');
     offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
     offcanvasBodyEl.appendChild(offcanvasAboutYouEl);
-
 
     //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
 
@@ -97,7 +94,6 @@ document.getElementById('addMember').addEventListener('submit', function(e){
         const newMember = (`${newMemberName} ${newMemberLastName}`);
         console.log(newMember);
         const cardEl = generateCardEl(newMember);
-        //offcanvasAboutYouEl.innerText = aboutMember; // ??????????? Solito problema
         containerEl.appendChild(cardEl);
     }
 
