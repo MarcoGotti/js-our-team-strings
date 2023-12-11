@@ -1,15 +1,3 @@
-/* 
-Utilizzando i dati forniti, creare un array di stringhe con i nomi dei membri del team.
-
-
-
-BONUS 1:
-In generale curare la parte di UI e organizzare i singoli membri in card/schede.
-
-
-il mio team: Jimmy Page, Jonah Lomu, Marilyn Monroe, Queen Elisabeth, Lara Croft, Batman, Son Goku
-*/
-
 
 //MILESTONE 0: Creare l’array di stringhe contenente i nomi dei membri del team.
 const team =['Jimmy Page', 'Jonah Lomu', 'Marilyn Monroe', 'Merlin', 'Donald Duck', 'Al Capone', 'Cruella De Vil', 'Indiana Jones', 'Rosa Luxemburg', 'Ray  Charles', 'Forrest Gump', 'Diego Maradona', 'Killer Bonnie'];
@@ -19,7 +7,9 @@ const containerEl = document.querySelector('.container');
 
 for (let i = 0; i < team.length; i++) {
     const cardEl = generateCardEl(team[i]);
-    containerEl.appendChild(cardEl); 
+    containerEl.appendChild(cardEl);
+    const offcanvasEl = generateOffCanvasEl(team[i]);
+    containerEl.appendChild(offcanvasEl);    
 }
 
 
@@ -33,6 +23,8 @@ function generateCardEl(name) {
     const cardEl = document.createElement('a');
     cardEl.classList.add('card', 'col-2', 'text-center', 'fw-bold', 'opacity', 'text-decoration-none');
     cardEl.innerText = name;
+    cardEl.setAttribute('data-bs-toggle', 'offcanvas');
+    cardEl.setAttribute('href', '#offcanvasMember');
 
     //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
 
@@ -49,19 +41,74 @@ function generateCardEl(name) {
     return cardEl
 }
 
+function generateOffCanvasEl(name) {
+    // create offcanvas
+    const offcanvasEl = document.createElement('div');
+    offcanvasEl.classList.add('offcanvas', 'offcanvas-start');
+    offcanvasEl.setAttribute('id', 'offcanvasMember');
+
+    const offcanvasHeaderEl = document.createElement('div');
+    offcanvasHeaderEl.classList.add('offcanvas-header', 'toggle_click');
+    offcanvasEl.appendChild(offcanvasHeaderEl);
+
+    const offcanvasTitleEl = document.createElement('h5');
+    offcanvasTitleEl.classList.add('offcanvas-title');
+    offcanvasTitleEl.setAttribute('id', 'offcanvasName');
+    offcanvasTitleEl.innerHTML = name;
+    offcanvasHeaderEl.appendChild(offcanvasTitleEl);
+
+    const offcanvasButtonEl = document.createElement('button');
+    offcanvasButtonEl.classList.add('btn-close');
+    offcanvasButtonEl.setAttribute('type', 'button');
+    offcanvasButtonEl.setAttribute('data-bs-dismiss', 'offcanvas');
+    offcanvasHeaderEl.appendChild(offcanvasButtonEl);
+
+    const offcanvasBodyEl = document.createElement('div');
+    offcanvasBodyEl.classList.add('offcanvas-body', 'toggle_click');
+    offcanvasEl.appendChild(offcanvasBodyEl);
+
+    const offcanvasAboutYouEl = document.createElement('div');
+    offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
+    offcanvasBodyEl.appendChild(offcanvasAboutYouEl);
+    /* 
+    <div class="offcanvas-header toggle_click">
+              <h5 class="offcanvas-title" id="offcanvasName">Bubu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body toggle_click">
+              <div>
+                Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+              </div>
+              
+            </div>
+    */
+
+    return offcanvasEl
+}
+
 // BONUS 2: Inserire un form per l’aggiunta di un elemento alla lista.
 
 document.getElementById('addMember').addEventListener('submit', function(e){
     e.preventDefault();
-    console.log(e);
+
     const newMemberName = document.getElementById('newMemberName').value;
     const newMemberLastName = document.getElementById('newMemberLastName').value;
+    const aboutMember = document.getElementById('aboutMember').value;
    
-    const cardEl = generateCardEl(newMemberName + newMemberLastName);
-    containerEl.appendChild(cardEl);
+   
+    if (newMemberName == '' || aboutMember == '') {
+        alert('🛑" *Name " and " *About you " are mandatory 🛑');
+    } else {
+        const newMember = (`${newMemberName} ${newMemberLastName}`);
+        console.log(newMember);
+        const cardEl = generateCardEl(newMember);
+        containerEl.appendChild(cardEl);
+    }
+
     // empty the form after adding new member
     document.getElementById('newMemberName').value = '';
     document.getElementById('newMemberLastName').value = '';
+    document.getElementById('aboutMember').value = '';
 })
 
 
