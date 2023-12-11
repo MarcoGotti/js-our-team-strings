@@ -9,18 +9,19 @@ for (let i = 0; i < team.length; i++) {
 
     const cardEl = generateCardEl(team[i]);
     containerEl.appendChild(cardEl);
-    const offcanvasEl = generateOffCanvasEl(team[i]);
-    containerEl.appendChild(offcanvasEl);    
+    //const offcanvasEl = generateOffCanvasEl(team[i]);
+    //containerEl.appendChild(offcanvasEl);    
 }
 
 
 /**
- * Generate card element
- * Generate DOM element with classList (4) and returns  it
+ * Generate card element and associated offcanvas element
+ * Generate 7 DOM elements and return them as cardEl
  * @param {string} name Insert a name into the card
  * @returns object
  */
 function generateCardEl(name) {
+    //generate card element
     const offCanvasName = name[0] + name[1] + name[2];
     const cardEl = document.createElement('a');
     cardEl.classList.add('card', 'col-2', 'text-center', 'fw-bold', 'opacity', 'text-decoration-none');
@@ -28,32 +29,11 @@ function generateCardEl(name) {
     cardEl.setAttribute('data-bs-toggle', 'offcanvas');
     cardEl.setAttribute('href', '#offcanvasMember' + offCanvasName);//
 
-    //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
-
-    /* //questa formula è farina del mio sacco: lightMember() not defined
-    cardEl.setAttribute('onclick', 'lightMember()');  
-    function lightMember() {
-        cardEl.classList.toggle('toggle_click');  
-    } */
-
-    //questa formula è un copy-paste della correzione di Fabio
-    cardEl.addEventListener('click', function(e){  
-        this.classList.toggle('toggle_click');
-    
-    })
-    return cardEl
-}
-
-/**
- * Generate offcanvas element and child elements
- * @param {string} name Insert same name as in cardEl
- * @returns object
- */
-function generateOffCanvasEl(name) {
-    const offCanvasName = name[0] + name[1] + name[2];
+    //generate offcanvas element
     const offcanvasEl = document.createElement('div');
     offcanvasEl.classList.add('offcanvas', 'offcanvas-start');
     offcanvasEl.setAttribute('id', 'offcanvasMember' + offCanvasName);//
+    containerEl.appendChild(offcanvasEl);
 
     const offcanvasHeaderEl = document.createElement('div');
     offcanvasHeaderEl.classList.add('offcanvas-header', 'toggle_click');
@@ -79,25 +59,27 @@ function generateOffCanvasEl(name) {
     offcanvasAboutYouEl.innerText = 'This is Team-member is a real legend. No words need to be spoken';
     offcanvasBodyEl.appendChild(offcanvasAboutYouEl);
 
-    // back to standard as one closes the offcanvas. cardEl is undefined
+
+    //MILESTONE 3: Aggiungere un evento click sulla card che aggiunge/rimuove una classe per evidenziare un componente del team.
+
+    /* //questa formula è farina del mio sacco: lightMember() not defined
+    cardEl.setAttribute('onclick', 'lightMember()');  
+    function lightMember() {
+        cardEl.classList.toggle('toggle_click');  
+    } */
+
+    //questa formula è un copy-paste della correzione di Fabio
+    cardEl.addEventListener('click', function(e){  
+        this.classList.toggle('toggle_click');
+    })
+    // back to standard as one closes the offcanvas
     offcanvasButtonEl.addEventListener('click', function(){
         cardEl.classList.remove('toggle_click'); 
     })
-    /* 
-    <div class="offcanvas-header toggle_click">
-              <h5 class="offcanvas-title" id="offcanvasName">Bubu</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body toggle_click">
-              <div>
-                Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-              </div>
-              
-            </div>
-    */
-
-    return offcanvasEl
+    return cardEl //
 }
+
+
 
 // BONUS 2: Inserire un form per l’aggiunta di un elemento alla lista.
 
@@ -115,6 +97,7 @@ document.getElementById('addMember').addEventListener('submit', function(e){
         const newMember = (`${newMemberName} ${newMemberLastName}`);
         console.log(newMember);
         const cardEl = generateCardEl(newMember);
+        //offcanvasAboutYouEl.innerText = aboutMember; // ??????????? Solito problema
         containerEl.appendChild(cardEl);
     }
 
